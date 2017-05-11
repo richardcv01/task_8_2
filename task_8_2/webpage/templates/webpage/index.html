@@ -1,0 +1,50 @@
+{% load staticfiles %}
+
+
+{% csrf_token %}
+<a href="logout">logout</a>
+user: {{ username }}
+<form action="{% url 'web' %}" method="post">
+        {% csrf_token %}
+<select required id="sel" name="sel" >
+    <option>All</option>
+    {% for sl in select %}
+  <option>{{ sl.cryptoCurrency_name }}</option>
+    {% endfor %}
+</select>
+<input type="submit" value="Зайти" />
+</form>
+
+<table border="1">
+   <caption></caption>
+   <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Symbol</th>
+    <th>Marcet Cap</th>
+    <th>Price</th>
+    <th>circulating supply Cap</th>
+    <th>volume (24h)</th>
+    <th>% 1 h </th>
+    <th>% 24 h</th>
+    <th>% 7 d</th>
+       <th>data</th>
+   </tr>
+     {% for t in table %}
+     <tr>
+       <td>{{ t.id }}</td>
+       <td>{{ t.cryptoCurrency.cryptoCurrency_name }}</td>
+       <td>{{ t.cryptoCurrency.cryptoCurrency_symbol }}</td>
+       <td>{{ t.marcet_cap }}</td>
+       <td>{{ t.price }}</td>
+       <td>{{ t.circulating_supply }}</td>
+       <td>{{ t.volum }}</td>
+       <td>{{ t.h1 }}</td>
+       <td>{{ t.h24 }}</td>
+       <td>{{ t.d7 }}</td>
+       <td>{{ t.insert_date }}</td>
+     <tr>
+     {% endfor %}
+ </table>
+
+ </table>
