@@ -10,12 +10,12 @@ from rest_framework.renderers import JSONRenderer
 from .models import CryptoCurrency, CryptoCurrency_table
 from django.contrib import auth
 from django.views.generic.edit import FormView
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.views.generic.base import View
 from django.contrib.auth import logout
+from .Forms import AuthenticateForm, UserCreateForm
+
 
 @login_required(login_url="/login/")
 def index(request):
@@ -32,7 +32,7 @@ def index(request):
     return render(request, 'webpage/index.html', dic)
 
 class RegisterFormView(FormView):
-    form_class = UserCreationForm
+    form_class = UserCreateForm
     success_url = "/login/"
     template_name = "webpage/register.html"
 
@@ -41,7 +41,7 @@ class RegisterFormView(FormView):
         return super(RegisterFormView, self).form_valid(form)
 
 class LoginFormView(FormView):
-    form_class = AuthenticationForm
+    form_class = AuthenticateForm
     template_name = "webpage/login.html"
     success_url = "/"
 
@@ -59,7 +59,6 @@ class LogoutView(View):
 from .serializers import CryptoSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-
 
 @api_view(['GET', 'POST'])
 @permission_classes((permissions.AllowAny,))

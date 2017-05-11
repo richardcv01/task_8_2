@@ -1,10 +1,12 @@
-{% load staticfiles %}
 
-
+{% extends 'webpage/base.html' %}
+{% block content %}
 {% csrf_token %}
+<div class="container">
 <a href="logout">logout</a>
 user: {{ username }}
-<form action="{% url 'web' %}" method="post">
+
+<form class="form-signin" action="{% url 'web' %}" method="post">
         {% csrf_token %}
 <select required id="sel" name="sel" >
     <option>All</option>
@@ -12,10 +14,11 @@ user: {{ username }}
   <option>{{ sl.cryptoCurrency_name }}</option>
     {% endfor %}
 </select>
-<input type="submit" value="Зайти" />
+ <button class="btn btn-lg btn-primary btn-block" type="submit">Знайти</button>
 </form>
+ </div>
 
-<table border="1">
+<table class="table table-striped">
    <caption></caption>
    <tr>
     <th>#</th>
@@ -46,5 +49,6 @@ user: {{ username }}
      <tr>
      {% endfor %}
  </table>
+    </div>
 
- </table>
+{% endblock %}

@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Регистрация</title>
-  </head>
-  <body>
-    <form action="" method="post">
+{% extends 'webpage/base.html' %}
+{% block content %}
+<div class="container">
+    <form class="form-signin" action="" method="post">
       {% csrf_token %}
       <!-- as_p для того, чтобы каждый элемент формы был с новой строки -->
       {{ form.as_p }}
       <button type="submit">Зарегистрироваться</button>
     </form>
-  </body>
-</html>
+  </div>
+{% endblock %}
