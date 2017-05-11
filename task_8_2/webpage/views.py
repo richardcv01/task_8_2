@@ -56,14 +56,4 @@ class LogoutView(View):
         return HttpResponseRedirect("/")
 
 
-from .serializers import CryptoSerializer
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
 
-@api_view(['GET', 'POST'])
-@permission_classes((permissions.AllowAny,))
-def crypt_list(request):
-    if request.method == 'GET':
-        crypto = CryptoCurrency.objects.all()
-        serializer = CryptoSerializer(crypto, many=True)
-        return Response(serializer.data)
