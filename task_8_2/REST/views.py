@@ -16,8 +16,9 @@ def crypt_list(request):
 @permission_classes((permissions.AllowAny,))
 def cript_detail(request, pk):
     if request.method == 'GET':
+        permission_classes('detal1')
         cript = CryptoCurrency_table.objects.get(pk=pk)
-        data = CryptoCurrency_table.objects.filter(cryptoCurrency__cryptoCurrency_name__exact=cript)
+        data = CryptoCurrency_table.objects.filter(cryptoCurrency_id=cript.id)
         serializer = DataSerializer(data, many=True)
         return Response(serializer.data)
 
@@ -28,5 +29,14 @@ def cript_detail(request, pk):
 def data_list(request):
     if request.method == 'GET':
         data = CryptoCurrency_table.objects.all()
+        serializer = DataSerializer(data, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+@permission_classes((permissions.AllowAny,))
+def data_detail(request, pk):
+    if request.method == 'GET':
+        permission_classes('detal')
+        data = CryptoCurrency_table.objects.filter(pk=pk)
         serializer = DataSerializer(data, many=True)
         return Response(serializer.data)

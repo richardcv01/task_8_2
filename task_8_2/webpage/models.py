@@ -28,15 +28,12 @@ class CryptoCurrency_table(models.Model):
     d7 = models.DecimalField(max_digits=16, decimal_places=2)
     insert_date = models.DateTimeField(db_index=True, auto_now_add=True)
 
-    def __unicode__(self):
-        return '%d: %s' % (self.marcet_ca, self.price)
+    #def __unicode__(self):
+        #return '%d: %s' % (self.marcet_ca, self.price)
 
-    def __str__(self):
-        return reverse('vi')+ str(self.pk)
+    #def __str__(self):
+        #return reverse('vi')+ str(self.pk)
 
-    def get_url(self):
-        print('Okdsds')
-        return 'vi'
 
 
 

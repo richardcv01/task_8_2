@@ -2,17 +2,18 @@ from rest_framework import serializers
 from webpage.models import CryptoCurrency, CryptoCurrency_table
 
 class CryptoSerializer(serializers.ModelSerializer):
-    #coins = serializers.StringRelatedField(many=True)
-    coin = serializers.SerializerMethodField('get_url')
+    coins = [serializers.StringRelatedField(many=True)]
+    #coins = serializers.HyperlinkedRelatedField(
+        #many=True,
+        #read_only=True,
+        #view_name='data_detail'
+    #)
 
-    def get_url(self, obj):
-        id = obj.id
-        crypto = CryptoCurrency_table.objects.filter(pk=id)
-        return str(crypto)
+
 
     class Meta:
         model = CryptoCurrency
-        fields = ('id', 'cryptoCurrency_name', 'cryptoCurrency_symbol', 'coin')
+        fields = ('id', 'cryptoCurrency_name', 'cryptoCurrency_symbol', 'coins')
 
 
 class DataSerializer(serializers.ModelSerializer):
