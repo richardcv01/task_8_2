@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
+from rest_framework.reverse import reverse
 # Create your models here.
 
 class CryptoCurrency(models.Model):
@@ -28,11 +29,11 @@ class CryptoCurrency_table(models.Model):
     d7 = models.DecimalField(max_digits=16, decimal_places=2)
     insert_date = models.DateTimeField(db_index=True, auto_now_add=True)
 
-    #def __unicode__(self):
-        #return '%d: %s' % (self.marcet_ca, self.price)
+    def __unicode__(self):
+        return '%d: %s' % (self.marcet_cap, self.price)
 
-    #def __str__(self):
-        #return reverse('vi')+ str(self.pk)
+    def __str__(self):
+        return str(self.marcet_cap)
 
 
 

@@ -1,42 +1,54 @@
-from .serializers import CryptoSerializer, DataSerializer
+from .serializers import CryptoSerializer, DataSerializer, CryptoSerializerAll
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, detail_route, list_route, authentication_classes
 from webpage.models import CryptoCurrency, CryptoCurrency_table
 from rest_framework import permissions
-
-@api_view(['GET', 'POST'])
-@permission_classes((permissions.AllowAny,))
-def crypt_list(request):
-    if request.method == 'GET':
-        crypto = CryptoCurrency.objects.all()
-        serializer = CryptoSerializer(crypto, many=True)
-        return Response(serializer.data)
-
-@api_view(['GET', 'POST'])
-@permission_classes((permissions.AllowAny,))
-def cript_detail(request, pk):
-    if request.method == 'GET':
-        permission_classes('detal1')
-        cript = CryptoCurrency_table.objects.get(pk=pk)
-        data = CryptoCurrency_table.objects.filter(cryptoCurrency_id=cript.id)
-        serializer = DataSerializer(data, many=True)
-        return Response(serializer.data)
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework import viewsets
 
 
+class Crypt_ViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = CryptoCurrency.objects.all()
+    serializer_class = CryptoSerializer
 
-@api_view(['GET', 'POST'])
-@permission_classes((permissions.AllowAny,))
-def data_list(request):
-    if request.method == 'GET':
-        data = CryptoCurrency_table.objects.all()
-        serializer = DataSerializer(data, many=True)
-        return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
-@permission_classes((permissions.AllowAny,))
+class Data_ViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = CryptoCurrency_table.objects.all()
+    serializer_class = DataSerializer
+
+
+class Crypto_ViewSetAll(viewsets.ReadOnlyModelViewSet):
+    queryset = CryptoCurrency_table.objects.all()
+    serializer_class = CryptoSerializerAll
+
+
+
+class Crypt_List(generics.ListCreateAPIView):
+    queryset = CryptoCurrency.objects.all()
+    serializer_class = CryptoSerializer
+
+
+
+class Cript_Detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CryptoCurrency.objects.all()
+    serializer_class = CryptoSerializer
+
+
+class Data_List(generics.ListCreateAPIView):
+    queryset = CryptoCurrency_table.objects.all()
+    serializer_class = DataSerializer
+
+class Data_Detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CryptoCurrency_table.objects.all()
+    serializer_class = DataSerializer
+
 def data_detail(request, pk):
-    if request.method == 'GET':
-        permission_classes('detal')
-        data = CryptoCurrency_table.objects.filter(pk=pk)
-        serializer = DataSerializer(data, many=True)
-        return Response(serializer.data)
+    queryset = CryptoCurrency_table.objects.filter(pk=pk)
+    serializer_class = DataSerializer(queryset, many=True)
+    return Response(serializer_class.data)
+
+
+
