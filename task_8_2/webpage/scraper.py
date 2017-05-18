@@ -5,6 +5,11 @@ import re
 from decimal import Decimal
 
 class Scraper():
+
+    def __init__(self):
+        self.dic = dict()
+        self.event_loop = asyncio.SelectorEventLoop()
+
     async def fetch(self, session, url):
         headers = {'Host': 'coinmarketcap.com',
             'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -14,17 +19,26 @@ class Scraper():
             'Connection': 'keep-alive',
             'Upgrade-Insecure-Requests': '1',
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0'}
-    #proxy = "http://10.24.100.210:3128"
-        async with session.get(url, headers=headers, proxy = "http://10.24.100.210:3128") as response:
+        async with session.get(url, headers=headers, proxy="http://10.24.100.210:3128") as response:
             return await response.text()
-    def __init__(self):
-        self.dic = dict()
+
+    async def get_table(self, html):
+        tree = etree.HTML(html)
+        table = tree.xpath('//table[@id="currencies-all"]/tbody/tr')
+        return table
+
+    async def element(self, html):
+        table = await self.get_table(html)
+        print(table[0].xpath('//td[@class="no-wrap currency-name"]/a/text()'))
+
+
 
     async def turple_value(self, html):
         tree = etree.HTML(html)
         chb1 = r'[0-9|\,|\.]+'
         sub1 = r'\s', ''
         table = tree.xpath('//table[@id="currencies-all"]')
+        print(table)
         self.dic['Name'] = table[0].xpath('//td[@class="no-wrap currency-name"]/a/text()')
         self.dic['Symbol'] = table[0].xpath('//td[@class="text-left"]/text()')
 
@@ -43,21 +57,24 @@ class Scraper():
                     table_obj[0].xpath('//td[9]/text() | //td[9]/span/text()')]
         self.dic['d7'] = [0 if re.sub(r'\s', '', s)=='?' else Decimal(re.search(chb1, re.sub(r'\,', '', s)).group()) for s in
                   table_obj[0].xpath('//td[10]/text() | //td[10]/span/text()')]
+
     #return name, symbol, market_cap, price, circulating_supply, volume, h1, h24, d7
 
 
     async def run(self, loop):
         async with ClientSession(loop=loop) as session:
             html = await self.fetch(session, 'https://coinmarketcap.com/all/views/all/')
-            return await self.turple_value(html)
+            #return await self.turple_value(html)
+            return await self.element(html)
 
     def return_data(self):
-        event_loop = asyncio.SelectorEventLoop()
-        asyncio.set_event_loop(event_loop)
+        #event_loop = asyncio.SelectorEventLoop()
+        asyncio.set_event_loop(self.event_loop)
         try:
-            event_loop.run_until_complete(self.run(event_loop))
+            self.event_loop.run_until_complete(self.run(self.event_loop))
         finally:
-            event_loop.close()
+            self.event_loop.close()
         return self.dic
 
-
+S = Scraper()
+print(S.return_data())
