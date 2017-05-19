@@ -4,6 +4,7 @@ from lxml import etree
 import re
 from decimal import Decimal
 
+
 class Scraper():
 
     def __init__(self):
@@ -25,13 +26,25 @@ class Scraper():
     async def get_table(self, html):
         tree = etree.HTML(html)
         table = tree.xpath('//table[@id="currencies-all"]/tbody/tr')
+        print(table)
         return table
 
     async def element(self, html):
         table = await self.get_table(html)
-        print(table[0].xpath('//td[@class="no-wrap currency-name"]/a/text()'))
+
+        name = table[0].xpath('.//td[2]/a/text()')[0]
+        symbol = table[0].xpath('.//td[3]/text()')[0]
+        market_caps = table[0].xpath('.//td[4]/text()')[0]
+        price =  market_cap = table[0].xpath('.//td[5]/a/text()')[0]
+        circulating_supply = table[0].xpath('.//td[6]/a/text()')[0]
+        volume = table[0].xpath('.//td[7]/text()')[0]
+        h1 = table[0].xpath('.//td[8]/text()')[0]
+        h24 = table[0].xpath('.//td[9]/text()')[0]
+        d7 = table[0].xpath('.//td[10]/text()')[0]
 
 
+
+   #tr/td[3]/text()
 
     async def turple_value(self, html):
         tree = etree.HTML(html)
