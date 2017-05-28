@@ -105,5 +105,7 @@ class Scraper():
             self.event_loop.close()
         return self.dic
 
-S = Scraper()
-print(S.return_data())
+    
+if __name__ == "__main__":
+    S = Scraper()
+    print(S.return_data())
