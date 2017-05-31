@@ -15,7 +15,9 @@ from django.http import HttpResponseRedirect
 from django.views.generic.base import View
 from django.contrib.auth import logout
 from .Forms import AuthenticateForm, UserCreateForm
+from django_pandas.io import read_frame
 
+from .select_pandas import fun
 
 @login_required(login_url="/login/")
 def index(request):
@@ -30,6 +32,17 @@ def index(request):
     print(auth.get_user(request))
     dic = {'table':table, 'select':select, 'username':auth.get_user(request)}
     return render(request, 'webpage/index.html', dic)
+
+@login_required(login_url="/login/")
+def analitic_page(request):
+    table = CryptoCurrency_table.pdobjects.filter(price__gt=1).filter(marcet_cap__gt=1)
+    df = table.to_dataframe()
+    df = df.groupby(df['cryptoCurrency']).max()
+    print(df['cryptoCurrency'])
+    json = df.to_json(orient='records')
+    dic = {'data':json,
+           }
+    return render(request, 'webpage/analitic_page.html', dic)
 
 class RegisterFormView(FormView):
     form_class = UserCreateForm

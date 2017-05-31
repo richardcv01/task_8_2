@@ -1,0 +1,38 @@
+{% extends 'webpage/base.html' %}
+
+{% load staticfiles %}
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div class="container">
+<a href="logout">logout</a>
+user: {{ username }}
+       {% csrf_token %}
+
+
+
+
+<table id="table" data-attrib="{{ data }}" class="table table-striped">
+   <caption></caption>
+   <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Marcet Cap</th>
+    <th>Price</th>
+    <th>circulating supply Cap</th>
+    <th>volume (24h)</th>
+    <th>% 1 h </th>
+    <th>% 24 h</th>
+    <th>% 7 d</th>
+    <th>data</th>
+   </tr>
+</table>
+
+<script src="{% static 'webpage/js/pandas_bootstrap_table.js' %}"></script>
+    </div>
+
+
+{% endblock %}

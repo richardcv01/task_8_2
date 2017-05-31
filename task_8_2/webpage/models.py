@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 #from django.core.urlresolvers import reverse
 from rest_framework.reverse import reverse
+from django_pandas.managers import DataFrameManager
 # Create your models here.
 
 class CryptoCurrency(models.Model):
@@ -28,6 +29,9 @@ class CryptoCurrency_table(models.Model):
     h24 = models.DecimalField(max_digits=16, decimal_places=2)
     d7 = models.DecimalField(max_digits=16, decimal_places=2)
     insert_date = models.DateTimeField(db_index=True, auto_now_add=True)
+
+    objects = models.Manager()
+    pdobjects = DataFrameManager()
 
     def __unicode__(self):
         return '%d: %s' % (self.marcet_cap, self.price)

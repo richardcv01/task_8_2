@@ -30,7 +30,7 @@ class Scraper():
         return table
 
     def get_row(self, table, i):
-        #table = await self.get_table(html)
+        #table = await self.get_table(html
         name = table[i].xpath('.//td[2]/a/text()')[0]
         symbol = table[i].xpath('.//td[3]/text()')[0]
         market_caps = table[i].xpath('.//td[4]/text()')[0]
